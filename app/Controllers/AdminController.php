@@ -40,7 +40,7 @@ class AdminController extends BaseController
 
         $total_fees = $transactionModel
             ->select('SUM(fee) as total_fee')
-            ->where('operation_type_id', $transfer_type['id'])
+            ->whereIn('operation_type_id', [$transfer_type['id'], $withdrawal_type['id']])
             ->first();
 
         $deposit_count = $transactionModel
@@ -225,10 +225,11 @@ class AdminController extends BaseController
         $operationTypeModel = new OperationTypeModel();
 
         $transfer_type = $operationTypeModel->where('code', 'transfert')->first();
+        $withdrawal_type = $operationTypeModel->where('code', 'retrait')->first();
 
         $total_fees = $transactionModel
             ->select('SUM(fee) as total_fee')
-            ->where('operation_type_id', $transfer_type['id'])
+            ->whereIn('operation_type_id', [$transfer_type['id'], $withdrawal_type['id']])
             ->first();
 
         $total_commissions = $transactionModel
