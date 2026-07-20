@@ -2,8 +2,12 @@
 
 ## Informations des étudiants
 
-- **Étudiant 1:** [Nom Prénom]
-- **Étudiant 2:** [Nom Prénom]
+- **Étudiant 1:** [Toky_4332]
+- **Étudiant 2:** [Hasina_4131]
+
+## Formulaire obligatoire
+
+- Remplir le formulaire étudiant avant livraison : https://forms.gle/nCv6xJYHVvVJj2FKA
 
 ## Version 1 - Livraison v1
 
