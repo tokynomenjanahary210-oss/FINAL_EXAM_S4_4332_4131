@@ -16,7 +16,7 @@
         </svg>
         Mobi<span>Cash</span>
     </a>
-    <div class="text-white-50 small mb-2 px-2"><?= session()->get('client_phone') ?></div>
+    <div class="sidebar-phone"><?= session()->get('client_phone') ?></div>
     <ul class="sidebar-nav">
         <li><a href="/client/dashboard">Solde</a></li>
         <li><a href="/client/depot" class="active">Dépôt</a></li>

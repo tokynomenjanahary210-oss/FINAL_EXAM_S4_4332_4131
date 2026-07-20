@@ -137,6 +137,15 @@ body {
     background: linear-gradient(90deg, var(--dark-light) 0%, transparent 100%);
 }
 
+.sidebar-phone {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 1rem;
+    letter-spacing: 0.02em;
+}
+
 .main-content {
     margin-left: 260px;
     padding: 2rem;

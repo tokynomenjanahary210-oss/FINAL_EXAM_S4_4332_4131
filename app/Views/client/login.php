@@ -19,7 +19,8 @@
                             <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
                         </svg>
                         <h2 class="fw-black mb-2" style="color: var(--dark);">MobiCash</h2>
-                        <p class="text-muted">Entrez votre numéro Airtel</p>
+
+
                     </div>
 
                     <?php if (isset($error)): ?>
@@ -34,7 +35,7 @@
                         <button type="submit" class="btn btn-primary-custom w-100">Se connecter</button>
                     </form>
 
-                    <p class="text-center mt-4 text-muted small">Connexion automatique avec votre numéro Airtel</p>
+    
                 </div>
             </div>
         </div>
