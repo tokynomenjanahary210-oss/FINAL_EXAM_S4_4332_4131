@@ -36,17 +36,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= session()->getFlashdata('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Tableau de bord</h1>
+    <h1 class="fw-bold mb-4">Tableau de bord Airtel</h1>
 
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white shadow border-0" style="background: var(--dark);">
                 <div class="card-body">
                     <h5 class="card-title">Nombre de clients</h5>
@@ -54,11 +48,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card text-white shadow border-0" style="background: var(--primary);">
                 <div class="card-body">
-                    <h5 class="card-title">Solde total</h5>
-                    <p class="card-text display-4 fw-bold"><?= number_format($total_balance) ?> Ar</p>
+                    <h5 class="card-title">Total des frais</h5>
+                    <p class="card-text display-4 fw-bold"><?= number_format($total_fees) ?></p>
+                    <p class="card-text text-white-50">Ar</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white shadow border-0" style="background: #0d6efd;">
+                <div class="card-body">
+                    <h5 class="card-title">Dépôts</h5>
+                    <p class="card-text display-4 fw-bold"><?= $deposit_count ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white shadow border-0" style="background: #fd7e14;">
+                <div class="card-body">
+                    <h5 class="card-title">Retraits</h5>
+                    <p class="card-text display-4 fw-bold"><?= $withdrawal_count ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white shadow border-0" style="background: #dc3545;">
+                <div class="card-body">
+                    <h5 class="card-title">Transferts</h5>
+                    <p class="card-text display-4 fw-bold"><?= $transfer_count ?></p>
                 </div>
             </div>
         </div>
@@ -66,7 +85,7 @@
 
     <div class="card shadow border-0">
         <div class="card-header bg-white fw-bold">
-            Situation des comptes clients
+            Situation des comptes clients Airtel
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">

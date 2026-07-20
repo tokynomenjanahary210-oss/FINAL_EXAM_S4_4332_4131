@@ -24,20 +24,24 @@ https://forms.gle/nCv6xJYHVvVJj2FKA
 ## Version 2 - Livraison v2
 
 ### Hasina
-- Modèle OtherOperatorModel pour la gestion des autres opérateurs
+- Modèle OtherOperatorModel pour la gestion des opérateurs externes (Orange, Yas)
 - AdminController : CRUD autres opérateurs (ajout, modification, suppression)
-- AdminController : configuration commission globale
-- AdminController : page gains séparés (frais internes, frais externes, commissions à reverser)
-- AdminController : page montants à reverser par opérateur
+- AdminController : configuration commission globale pour transferts vers Orange/Yas
+- AdminController : dashboard Airtel uniquement (total frais, nombre dépôts, retraits, transferts)
+- AdminController : gains simplifiés Airtel (total frais + commissions à reverser)
+- AdminController : page montants à reverser par opérateur externe (Orange, Yas)
 - Views admin : other_operators.php, edit_other_operator.php, commission.php, amounts_to_send.php
-- Mise à jour gains.php pour affichage séparé
+- Mise à jour admin/index.php pour statistiques Airtel
+- Mise à jour admin/gains.php pour affichage simplifié
 - Mise à jour Routes.php avec nouvelles routes Version 2
-- Mise à jour base.sql avec table other_operators et colonnes Version 2
+- Mise à jour base.sql : Airtel comme opérateur principal, Orange/Yas comme externes
 
 ### Toky
-- Mise à jour ClientController : détection automatique opérateur externe
-- Mise à jour ClientController : calcul commission sur transferts externes
-- Mise à jour ClientController : option "inclure frais de retrait"
-- Mise à jour ClientController : envoi multiple vers plusieurs numéros
-- Mise à jour View client/transfert.php (case à cocher, support multi-destinataires)
-- Tests des fonctionnalités Version 2 (transferts internes/externes, commissions, multi-envoi)
+- Mise à jour ClientController : login uniquement pour clients Airtel (033, 035)
+- Mise à jour ClientController : rejet des transferts vers Orange/Yas en mode multi-envoi
+- Mise à jour ClientController : commission calculée sur le montant (pas sur les frais) pour transferts externes
+- Mise à jour ClientController : option "inclure frais de retrait" uniquement pour transferts Airtel→Airtel
+- Mise à jour ClientController : envoi multiple uniquement entre clients Airtel
+- Mise à jour View client/transfert.php : validation JavaScript préfixes Airtel, bouton + pour ajout dynamique
+- Mise à jour TransactionModel : ajout colonnes is_external, external_operator_id, commission_amount
+- Tests des fonctionnalités Version 2 (transferts Airtel uniquement, commissions, multi-envoi Airtel)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gains via les frais - MobiCash</title>
+    <title>Gains Airtel - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -25,9 +25,6 @@
         <li><a href="/admin/other_operators">Autres opérateurs</a></li>
         <li><a href="/admin/commission">Commission</a></li>
         <li><a href="/admin/amounts_to_send">Montants à reverser</a></li>
-        <li><a href="/admin/other_operators">Autres opérateurs</a></li>
-        <li><a href="/admin/commission">Commission</a></li>
-        <li><a href="/admin/amounts_to_send" class="active">Montants à reverser</a></li>
         <li><a href="/client/login">Accès Client</a></li>
     </ul>
 </div>
@@ -40,72 +37,25 @@
         </div>
     <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Situation des gains via les frais</h1>
+    <h1 class="fw-bold mb-4">Gains Airtel</h1>
 
     <div class="row g-4 mb-4">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="card text-white shadow border-0" style="background: var(--dark);">
                 <div class="card-body">
-                    <h5 class="card-title">Frais transferts internes</h5>
-                    <p class="card-text display-6 fw-bold"><?= number_format($internal_fees) ?></p>
+                    <h5 class="card-title">Total des frais gagnés par Airtel</h5>
+                    <p class="card-text display-4 fw-bold"><?= number_format($total_fees) ?></p>
                     <p class="card-text text-white-50">Ar</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white shadow border-0" style="background: var(--primary);">
-                <div class="card-body">
-                    <h5 class="card-title">Frais transferts externes</h5>
-                    <p class="card-text display-6 fw-bold"><?= number_format($external_fees) ?></p>
-                    <p class="card-text text-white-50">Ar</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white shadow border-0" style="background: #0d6efd;">
-                <div class="card-body">
-                    <h5 class="card-title">Total des frais</h5>
-                    <p class="card-text display-6 fw-bold"><?= number_format($total_gains) ?></p>
-                    <p class="card-text text-white-50">Ar</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="card text-white shadow border-0" style="background: #dc3545;">
                 <div class="card-body">
-                    <h5 class="card-title">Commissions à reverser</h5>
-                    <p class="card-text display-6 fw-bold"><?= number_format($total_commissions) ?></p>
+                    <h5 class="card-title">Total commissions à reverser</h5>
+                    <p class="card-text display-4 fw-bold"><?= number_format($total_commissions) ?></p>
                     <p class="card-text text-white-50">Ar</p>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">Détail par type d'opération</div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Type d'opération</th>
-                            <th>Total des frais (Ar)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($gains)): ?>
-                            <tr>
-                                <td colspan="2" class="text-center text-muted py-4">Aucun gain.</td>
-                            </tr>
-                        <?php endif; ?>
-                        <?php foreach ($gains as $gain): ?>
-                        <tr>
-                            <td><?= $gain['name'] ?></td>
-                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($gain['total']) ?> Ar</td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

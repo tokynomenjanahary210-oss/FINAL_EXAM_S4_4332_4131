@@ -15,10 +15,39 @@ class AdminController extends BaseController
     {
         $clientModel = new ClientModel();
         $transactionModel = new TransactionModel();
+        $operationTypeModel = new OperationTypeModel();
 
-        $data['clients'] = $clientModel->findAll();
-        $data['total_balance'] = array_sum(array_column($data['clients'], 'balance'));
-        $data['clients_count'] = count($data['clients']);
+        $clients = $clientModel->findAll();
+        $total_balance = array_sum(array_column($clients, 'clients_count'));
+
+        $deposit_type = $operationTypeModel->where('code', 'depot')->first();
+        $withdrawal_type = $operationTypeModel->where('code', 'retrait')->first();
+        $transfer_type = $operationTypeModel->where('code', 'transfert')->first();
+
+        $total_fees = $transactionModel
+            ->select('SUM(fee) as total_fee')
+            ->where('operation_type_id', $transfer_type['id'])
+            ->first();
+
+        $deposit_count = $transactionModel
+            ->where('operation_type_id', $deposit_type['id'])
+            ->countAllResults();
+
+        $withdrawal_count = $transactionModel
+            ->where('operation_type_id', $withdrawal_type['id'])
+            ->countAllResults();
+
+        $transfer_count = $transactionModel
+            ->where('operation_type_id', $transfer_type['id'])
+            ->countAllResults();
+
+        $data['clients'] = $clients;
+        $data['total_balance'] = $total_balance;
+        $data['clients_count'] = count($clients);
+        $data['total_fees'] = $total_fees['total_fee'] ?? 0;
+        $data['deposit_count'] = $deposit_count;
+        $data['withdrawal_count'] = $withdrawal_count;
+        $data['transfer_count'] = $transfer_count;
 
         return view('admin/index', $data);
     }
@@ -175,37 +204,17 @@ class AdminController extends BaseController
         return view('admin/commission', $data);
     }
 
-    // Version 2: Gains séparés
+    // Version 2: Gains Airtel uniquement
     public function gains()
     {
         $transactionModel = new TransactionModel();
         $operationTypeModel = new OperationTypeModel();
 
-        $operation_types = $operationTypeModel->findAll();
-        $gains = [];
+        $transfer_type = $operationTypeModel->where('code', 'transfert')->first();
 
-        foreach ($operation_types as $type) {
-            $total = $transactionModel
-                ->select('SUM(fee) as total_fee')
-                ->where('operation_type_id', $type['id'])
-                ->first();
-
-            $gains[] = [
-                'name' => $type['name'],
-                'total' => $total['total_fee'] ?? 0,
-            ];
-        }
-
-        $internal_fees = $transactionModel
+        $total_fees = $transactionModel
             ->select('SUM(fee) as total_fee')
-            ->where('is_external', 0)
-            ->where('operation_type_id', 3)
-            ->first();
-
-        $external_fees = $transactionModel
-            ->select('SUM(fee) as total_fee')
-            ->where('is_external', 1)
-            ->where('operation_type_id', 3)
+            ->where('operation_type_id', $transfer_type['id'])
             ->first();
 
         $total_commissions = $transactionModel
@@ -213,10 +222,7 @@ class AdminController extends BaseController
             ->where('is_external', 1)
             ->first();
 
-        $data['gains'] = $gains;
-        $data['total_gains'] = array_sum(array_column($gains, 'total'));
-        $data['internal_fees'] = $internal_fees['total_fee'] ?? 0;
-        $data['external_fees'] = $external_fees['total_fee'] ?? 0;
+        $data['total_fees'] = $total_fees['total_fee'] ?? 0;
         $data['total_commissions'] = $total_commissions['total_commission'] ?? 0;
 
         return view('admin/gains', $data);

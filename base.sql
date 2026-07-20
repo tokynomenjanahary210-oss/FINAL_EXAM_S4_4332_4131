@@ -1,4 +1,4 @@
--- Base de données SQLite pour Mobile Money Operator - Version 2
+-- Base de données SQLite pour Airtel Mobile Money Operator
 
 -- Table des opérateurs
 CREATE TABLE operators (
@@ -60,7 +60,7 @@ CREATE TABLE transactions (
     FOREIGN KEY (external_operator_id) REFERENCES other_operators(id)
 );
 
--- Table des autres opérateurs (Version 2)
+-- Table des autres opérateurs (Orange et Yas)
 CREATE TABLE other_operators (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -68,8 +68,8 @@ CREATE TABLE other_operators (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Données initiales pour l'opérateur
-INSERT INTO operators (name, prefixes, external_commission_percentage) VALUES ('MobileMoney', '033,037', 10);
+-- Données initiales pour l'opérateur Airtel
+INSERT INTO operators (name, prefixes, external_commission_percentage) VALUES ('Airtel', '033,035', 10);
 
 -- Données initiales pour les types d'opérations
 INSERT INTO operation_types (code, name, description) VALUES ('depot', 'Dépôt', 'Dépôt d''argent sur le compte');
@@ -99,11 +99,10 @@ INSERT INTO fee_brackets (operation_type_id, min_amount, max_amount, fee) VALUES
 INSERT INTO fee_brackets (operation_type_id, min_amount, max_amount, fee) VALUES (3, 500001, 1000000, 2500);
 INSERT INTO fee_brackets (operation_type_id, min_amount, max_amount, fee) VALUES (3, 1000001, 2000000, 3000);
 
--- Clients de test
-INSERT INTO clients (phone_number, balance, full_name) VALUES ('0331234567', 50000, 'Client Test');
-INSERT INTO clients (phone_number, balance, full_name) VALUES ('0377654321', 20000, 'Client Destinataire');
+-- Clients Airtel de test
+INSERT INTO clients (phone_number, balance, full_name) VALUES ('0331234567', 50000, 'Client Airtel Test');
+INSERT INTO clients (phone_number, balance, full_name) VALUES ('0357654321', 20000, 'Client Airtel 2');
 
--- Autres opérateurs (Version 2)
-INSERT INTO other_operators (name, prefixes) VALUES ('Yas', '034,038');
+-- Autres opérateurs (Orange et Yas)
 INSERT INTO other_operators (name, prefixes) VALUES ('Orange', '032,037');
-INSERT INTO other_operators (name, prefixes) VALUES ('Airtel', '033,035');
+INSERT INTO other_operators (name, prefixes) VALUES ('Yas', '034,038');

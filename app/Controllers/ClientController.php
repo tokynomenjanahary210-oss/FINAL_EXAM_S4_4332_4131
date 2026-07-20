@@ -19,7 +19,6 @@ class ClientController extends BaseController
             $phone = $this->request->getPost('phone_number');
             $clientModel = new ClientModel();
             $operatorModel = new OperatorModel();
-            $otherOperatorModel = new OtherOperatorModel();
 
             $operator = $operatorModel->first();
             $prefixes = array_map('trim', explode(',', $operator['prefixes']));
@@ -32,20 +31,7 @@ class ClientController extends BaseController
             }
 
             if (! $valid) {
-                $otherOperators = $otherOperatorModel->findAll();
-                foreach ($otherOperators as $otherOp) {
-                    $otherPrefixes = array_map('trim', explode(',', $otherOp['prefixes']));
-                    foreach ($otherPrefixes as $prefix) {
-                        if (str_starts_with($phone, $prefix)) {
-                            $valid = true;
-                            break 2;
-                        }
-                    }
-                }
-            }
-
-            if (! $valid) {
-                return view('client/login', ['error' => 'Numéro invalide. Utilisez un préfixe valide.']);
+                return view('client/login', ['error' => 'Seuls les clients Airtel peuvent se connecter. Préfixes autorisés : ' . $operator['prefixes']]);
             }
 
             $client = $clientModel->where('phone_number', $phone)->first();
@@ -212,11 +198,18 @@ class ClientController extends BaseController
 
             $phones = array_map('trim', $phones);
             $recipients = [];
+            $external_count = 0;
 
             foreach ($phones as $p) {
                 if (empty($p) || $p === $sender['phone_number']) {
                     continue;
                 }
+
+                $external_operator = $this->detectExternalOperator($p, $otherOperatorModel);
+                if ($external_operator) {
+                    $external_count++;
+                }
+
                 $receiver = $clientModel->where('phone_number', $p)->first();
                 if (! $receiver) {
                     $receiverId = $clientModel->insert([
@@ -231,6 +224,10 @@ class ClientController extends BaseController
 
             if (empty($recipients)) {
                 return redirect()->to('/client/dashboard')->with('error', 'Aucun destinataire valide.');
+            }
+
+            if (count($recipients) > 1 && $external_count > 0) {
+                return redirect()->to('/client/dashboard')->with('error', 'L\'envoi multiple n\'est autorisé qu\'entre clients Airtel.');
             }
 
             $share_amount = (int) floor($amount / count($recipients));
@@ -254,11 +251,11 @@ class ClientController extends BaseController
                 if ($is_external) {
                     $operator = $operatorModel->first();
                     $commission_percentage = $operator['external_commission_percentage'] ?? 0;
-                    $commission_amount = (int) floor($fee_amount * $commission_percentage / 100);
+                    $commission_amount = (int) floor($current_amount * $commission_percentage / 100);
                 }
 
                 $retrait_fee = 0;
-                if ($include_retrait_fee && $is_external) {
+                if ($include_retrait_fee && ! $is_external) {
                     $retrait_fee_bracket = $feeBracketModel
                         ->where('operation_type_id', 2)
                         ->where('min_amount <=', $current_amount)
