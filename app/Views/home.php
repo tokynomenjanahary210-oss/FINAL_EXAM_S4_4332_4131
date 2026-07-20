@@ -11,7 +11,6 @@
 <body>
 <div class="sidebar">
     <a href="/" class="sidebar-brand">
-            <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
         Mobi<span>Cash</span>
     </a>
     <ul class="sidebar-nav">
@@ -33,7 +32,6 @@
         <div class="col-md-8 text-center">
             <div class="glass-card p-5">
                 <div class="mb-4">
-                        <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
                     <h1 class="fw-black mb-3" style="font-size: 3.5rem; color: var(--dark); letter-spacing: -0.03em;">Mobi<span style="color: var(--primary);">Cash</span></h1>
                     <p class="text-muted mb-4" style="font-size: 1.1rem;">Système de paiement mobile nouvelle génération</p>
                 </div>
