@@ -16,9 +16,23 @@ class AdminController extends BaseController
         $clientModel = new ClientModel();
         $transactionModel = new TransactionModel();
         $operationTypeModel = new OperationTypeModel();
+        $operatorModel = new OperatorModel();
 
-        $clients = $clientModel->findAll();
-        $total_balance = array_sum(array_column($clients, 'clients_count'));
+        $operator = $operatorModel->first();
+        $airtel_prefixes = array_map('trim', explode(',', $operator['prefixes']));
+
+        $all_clients = $clientModel->findAll();
+        $clients = [];
+        foreach ($all_clients as $client) {
+            foreach ($airtel_prefixes as $prefix) {
+                if (str_starts_with($client['phone_number'], $prefix)) {
+                    $clients[] = $client;
+                    break;
+                }
+            }
+        }
+
+        $total_balance = array_sum(array_column($clients, 'balance'));
 
         $deposit_type = $operationTypeModel->where('code', 'depot')->first();
         $withdrawal_type = $operationTypeModel->where('code', 'retrait')->first();
@@ -259,8 +273,21 @@ class AdminController extends BaseController
     {
         $clientModel = new ClientModel();
         $transactionModel = new TransactionModel();
+        $operatorModel = new OperatorModel();
 
-        $clients = $clientModel->findAll();
+        $operator = $operatorModel->first();
+        $airtel_prefixes = array_map('trim', explode(',', $operator['prefixes']));
+
+        $all_clients = $clientModel->findAll();
+        $clients = [];
+        foreach ($all_clients as $client) {
+            foreach ($airtel_prefixes as $prefix) {
+                if (str_starts_with($client['phone_number'], $prefix)) {
+                    $clients[] = $client;
+                    break;
+                }
+            }
+        }
 
         foreach ($clients as $key => $client) {
             $clients[$key]['transactions_count'] = $transactionModel
