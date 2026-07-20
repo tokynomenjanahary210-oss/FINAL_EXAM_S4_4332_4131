@@ -6,33 +6,44 @@
     <title>Retrait</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/client/dashboard">Mobile Money</a>
+        <a class="navbar-brand" href="/client/dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-phone me-2" viewBox="0 0 16 16">
+                <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+            </svg>
+            Mobile Money
+        </a>
         <div class="navbar-nav">
             <a class="nav-link" href="/client/dashboard">Solde</a>
             <a class="nav-link" href="/client/depot">Dépôt</a>
-            <a class="nav-link" href="/client/retrait">Retrait</a>
+            <a class="nav-link active" href="/client/retrait">Retrait</a>
             <a class="nav-link" href="/client/transfert">Transfert</a>
             <a class="nav-link" href="/client/historique">Historique</a>
             <a class="nav-link" href="/client/logout">Déconnexion</a>
         </div>
     </div>
 </nav>
+
 <div class="container mt-4">
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif; ?>
     <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('error') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif; ?>
 
-    <h1>Retrait</h1>
-
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow border-0">
+                <div class="card-header bg-white fw-bold">Effectuer un retrait</div>
                 <div class="card-body">
                     <form action="/client/retrait" method="post">
                         <div class="mb-3">
