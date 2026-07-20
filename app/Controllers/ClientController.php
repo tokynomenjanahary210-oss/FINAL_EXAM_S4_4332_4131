@@ -48,14 +48,28 @@ class ClientController extends BaseController
             $session->set('client_id', $client['id']);
             $session->set('client_phone', $client['phone_number']);
 
-            return redirect()->to('/client/dashboard');
+            return redirect()->to('/client/home');
         }
 
         if ($session->get('client_id')) {
-            return redirect()->to('/client/dashboard');
+            return redirect()->to('/client/home');
         }
 
         return view('client/login');
+    }
+
+    public function home()
+    {
+        $session = session();
+        if (! $session->get('client_id')) {
+            return redirect()->to('/client/login');
+        }
+
+        $clientModel = new ClientModel();
+        $client = $clientModel->find($session->get('client_id'));
+
+        $data['client'] = $client;
+        return view('client/home', $data);
     }
 
     public function dashboard()

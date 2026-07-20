@@ -10,12 +10,12 @@
 </head>
 <body>
 <div class="sidebar">
-    <a href="/client/dashboard" class="sidebar-brand">
-            <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+    <a href="/client/home" class="sidebar-brand">
         Mobi<span>Cash</span>
     </a>
     <div class="sidebar-phone"><?= session()->get('client_phone') ?></div>
     <ul class="sidebar-nav">
+        <li><a href="/client/home">Accueil</a></li>
         <li><a href="/client/dashboard">Solde</a></li>
         <li><a href="/client/depot">Dépôt</a></li>
         <li><a href="/client/retrait">Retrait</a></li>

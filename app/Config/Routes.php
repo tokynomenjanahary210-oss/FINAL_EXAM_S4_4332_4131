@@ -35,6 +35,7 @@ $routes->get('/admin/amounts_to_send', 'AdminController::amounts_to_send');
 // Client routes
 $routes->get('/client/login', 'ClientController::login');
 $routes->post('/client/login', 'ClientController::login');
+$routes->get('/client/home', 'ClientController::home');
 $routes->get('/client/dashboard', 'ClientController::dashboard');
 $routes->get('/client/depot', 'ClientController::depot');
 $routes->post('/client/depot', 'ClientController::depot');
