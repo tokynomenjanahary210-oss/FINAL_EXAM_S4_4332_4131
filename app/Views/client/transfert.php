@@ -50,7 +50,7 @@
                             <div class="mb-3 phone-input-group">
                                 <label class="form-label">Numéro du destinataire</label>
                                 <div class="input-group">
-                                    <input type="text" name="phone_numbers[]" class="form-control" placeholder="Ex: 0331234567" required oninput="validateAirtelNumber(this)">
+                                    <input type="text" name="phone_numbers[]" class="form-control" placeholder="Ex: 0331234567" required>
                                 </div>
                             </div>
                         </div>
@@ -101,9 +101,6 @@ function addPhoneField() {
     input.className = 'form-control';
     input.placeholder = 'Ex: 0331234567';
     input.required = true;
-    input.oninput = function() {
-        validateAirtelNumber(this);
-    };
 
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
@@ -129,15 +126,6 @@ function addPhoneField() {
 
     container.appendChild(div);
     updateRemoveButtons();
-}
-
-function validateAirtelNumber(input) {
-    const value = input.value.trim();
-    if (value.length > 0 && !value.startsWith('033') && !value.startsWith('035')) {
-        input.setCustomValidity('Seuls les numéros Airtel (033 ou 035) sont autorisés.');
-    } else {
-        input.setCustomValidity('');
-    }
 }
 
 function removePhoneField(button) {
