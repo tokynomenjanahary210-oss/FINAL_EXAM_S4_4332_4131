@@ -84,20 +84,49 @@ let phoneCount = 1;
 function addPhoneField() {
     phoneCount++;
     const container = document.getElementById('phoneNumbersContainer');
+
     const div = document.createElement('div');
     div.className = 'mb-3 phone-input-group';
-    div.innerHTML = `
-        <label class="form-label">Numéro du destinataire</label>
-        <div class="input-group">
-            <input type="text" name="phone_numbers[]" class="form-control" placeholder="Ex: 0331234567" required oninput="validateAirtelNumber(this)">
-            <button type="button" class="btn btn-outline-danger" onclick="removePhoneField(this)" ${phoneCount <= 1 ? 'disabled' : ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                </svg>
-            </button>
-        </div>
-    </div>
+
+    const label = document.createElement('label');
+    label.className = 'form-label';
+    label.textContent = 'Numéro du destinataire';
+
+    const inputGroup = document.createElement('div');
+    inputGroup.className = 'input-group';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'phone_numbers[]';
+    input.className = 'form-control';
+    input.placeholder = 'Ex: 0331234567';
+    input.required = true;
+    input.oninput = function() {
+        validateAirtelNumber(this);
+    };
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn btn-outline-danger';
+    removeBtn.onclick = function() {
+        removePhoneField(this);
+    };
+    if (phoneCount <= 1) {
+        removeBtn.disabled = true;
+    }
+    removeBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+        </svg>
+    `;
+
+    inputGroup.appendChild(input);
+    inputGroup.appendChild(removeBtn);
+
+    div.appendChild(label);
+    div.appendChild(inputGroup);
+
     container.appendChild(div);
     updateRemoveButtons();
 }
@@ -113,9 +142,11 @@ function validateAirtelNumber(input) {
 
 function removePhoneField(button) {
     const group = button.closest('.phone-input-group');
-    group.remove();
-    phoneCount--;
-    updateRemoveButtons();
+    if (group) {
+        group.remove();
+        phoneCount--;
+        updateRemoveButtons();
+    }
 }
 
 function updateRemoveButtons() {
