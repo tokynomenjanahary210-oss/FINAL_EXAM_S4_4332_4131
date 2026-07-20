@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historique des transactions - MobiCash</title>
+    <title>Historique - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -40,41 +41,42 @@
         </div>
     <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Historique des transactions</h1>
+    <div class="page-header">
+        <h1>Historique des transactions</h1>
+        <p class="text-muted">Toutes vos opérations récentes</p>
+    </div>
 
-    <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">Mes transactions</div>
-        <div class="card-body p-0">
+    <div class="card-custom">
+        <div class="card-header-custom">Mes transactions</div>
+        <div class="card-body-custom p-0">
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered mb-0">
-                    <thead class="table-dark">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Date</th>
                             <th>Opération</th>
-                            <th>Montant (Ar)</th>
-                            <th>Frais (Ar)</th>
-                            <th>Solde avant (Ar)</th>
-                            <th>Solde après (Ar)</th>
+                            <th>Montant</th>
+                            <th>Frais</th>
+                            <th>Solde après</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($transactions)): ?>
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">Aucune transaction.</td>
+                                <td colspan="7" class="text-center py-5 text-muted">Aucune transaction pour le moment.</td>
                             </tr>
                         <?php endif; ?>
                         <?php foreach ($transactions as $transaction): ?>
                         <tr>
-                            <td><?= $transaction['id'] ?></td>
-                            <td><?= $transaction['created_at'] ?></td>
-                            <td><?= $transaction['operation_name'] ?></td>
-                            <td><?= number_format($transaction['amount']) ?></td>
-                            <td><?= number_format($transaction['fee']) ?></td>
-                            <td><?= number_format($transaction['balance_before']) ?></td>
-                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($transaction['balance_after']) ?></td>
-                            <td><?= $transaction['description'] ?></td>
+                            <td class="fw-bold">#<?= $transaction['id'] ?></td>
+                            <td class="text-muted"><?= date('d/m/Y H:i', strtotime($transaction['created_at'])) ?></td>
+                            <td><span class="badge-custom"><?= $transaction['operation_name'] ?></span></td>
+                            <td class="fw-bold"><?= number_format($transaction['amount']) ?> Ar</td>
+                            <td><?= number_format($transaction['fee']) ?> Ar</td>
+                            <td class="fw-bold" style="color: var(--dark);"><?= number_format($transaction['balance_after']) ?> Ar</td>
+                            <td class="text-muted"><?= $transaction['description'] ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

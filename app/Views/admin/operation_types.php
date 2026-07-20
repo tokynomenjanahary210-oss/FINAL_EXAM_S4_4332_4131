@@ -6,6 +6,7 @@
     <title>Types d'opérations - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -37,39 +38,41 @@
         </div>
     <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Types d'opérations</h1>
+    <div class="page-header">
+        <h1>Types d'opérations</h1>
+        <p class="text-muted">Gérer les types d'opérations disponibles</p>
+    </div>
 
-    <div class="card shadow border-0 mb-4">
-        <div class="card-header bg-white fw-bold">Ajouter un type d'opération</div>
-        <div class="card-body">
+    <div class="glass-card mb-4">
+        <div class="card-body p-5">
             <form action="/admin/operation_types" method="post">
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label">Code</label>
-                        <input type="text" name="code" class="form-control" required>
+                        <input type="text" name="code" class="input-custom form-control" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Nom</label>
-                        <input type="text" name="name" class="form-control" required>
+                        <input type="text" name="name" class="input-custom form-control" required>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Description</label>
-                        <input type="text" name="description" class="form-control">
+                        <input type="text" name="description" class="input-custom form-control">
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Ajouter</button>
+                        <button type="submit" class="btn btn-primary-custom w-100">Ajouter</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">Liste des types d'opérations</div>
-        <div class="card-body p-0">
+    <div class="card-custom">
+        <div class="card-header-custom">Liste des types d'opérations</div>
+        <div class="card-body-custom p-0">
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered mb-0">
-                    <thead class="table-dark">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Code</th>
@@ -81,17 +84,17 @@
                     <tbody>
                         <?php if (empty($operation_types)): ?>
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">Aucun type d'opération.</td>
+                                <td colspan="5" class="text-center py-5 text-muted">Aucun type d'opération.</td>
                             </tr>
                         <?php endif; ?>
                         <?php foreach ($operation_types as $type): ?>
                         <tr>
-                            <td><?= $type['id'] ?></td>
-                            <td><span class="badge bg-secondary"><?= $type['code'] ?></span></td>
+                            <td class="fw-bold">#<?= $type['id'] ?></td>
+                            <td><span class="badge-custom"><?= $type['code'] ?></span></td>
                             <td><?= $type['name'] ?></td>
-                            <td><?= $type['description'] ?></td>
+                            <td class="text-muted"><?= $type['description'] ?: '-' ?></td>
                             <td>
-                                <a href="/admin/operation_types/delete/<?= $type['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce type d\'opération ?')">Supprimer</a>
+                                <a href="/admin/operation_types/delete/<?= $type['id'] ?>" class="btn btn-outline-custom btn-sm" style="border-color: var(--danger); color: var(--danger);" onclick="return confirm('Supprimer ce type d\'opération ?')">Supprimer</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

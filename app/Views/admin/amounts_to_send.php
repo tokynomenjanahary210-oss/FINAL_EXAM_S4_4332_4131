@@ -6,6 +6,7 @@
     <title>Montants à reverser - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -37,14 +38,17 @@
         </div>
     <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Montants à reverser aux opérateurs</h1>
+    <div class="page-header">
+        <h1>Montants à reverser</h1>
+        <p class="text-muted">Commissions à reverser aux opérateurs externes</p>
+    </div>
 
-    <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">Commissions par opérateur</div>
-        <div class="card-body p-0">
+    <div class="card-custom">
+        <div class="card-header-custom">Commissions par opérateur</div>
+        <div class="card-body-custom p-0">
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered mb-0">
-                    <thead class="table-dark">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
                             <th>Opérateur</th>
                             <th>Nombre de transferts</th>
@@ -54,14 +58,14 @@
                     <tbody>
                         <?php if (empty($amounts)): ?>
                             <tr>
-                                <td colspan="3" class="text-center text-muted py-4">Aucun montant à reverser.</td>
+                                <td colspan="3" class="text-center py-5 text-muted">Aucun montant à reverser.</td>
                             </tr>
                         <?php endif; ?>
                         <?php foreach ($amounts as $amount): ?>
                         <tr>
                             <td class="fw-bold"><?= $amount['name'] ?></td>
                             <td><?= $amount['transfer_count'] ?></td>
-                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($amount['total_commission']) ?> Ar</td>
+                            <td class="fw-bold" style="color: var(--dark);"><?= number_format($amount['total_commission']) ?> Ar</td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

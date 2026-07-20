@@ -6,6 +6,7 @@
     <title>Dépôt - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -40,17 +41,24 @@
         </div>
     <?php endif; ?>
 
+    <div class="page-header">
+        <h1>Effectuer un dépôt</h1>
+        <p class="text-muted">Ajouter des fonds sur votre compte</p>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card shadow border-0">
-                <div class="card-header bg-white fw-bold">Effectuer un dépôt</div>
-                <div class="card-body">
+            <div class="glass-card">
+                <div class="card-body p-5">
                     <form action="/client/depot" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Montant (Ar)</label>
-                            <input type="number" name="amount" class="form-control" required>
+                        <div class="mb-4">
+                            <label class="form-label">Montant à déposer</label>
+                            <div class="input-group">
+                                <input type="number" name="amount" class="input-custom form-control" placeholder="0" required>
+                                <span class="input-group-text" style="border-radius: 0 16px 16px 0; border: 2px solid var(--gray-200); border-left: none; background: var(--gray-50); font-weight: 600;">Ar</span>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Effectuer le dépôt</button>
+                        <button type="submit" class="btn btn-primary-custom w-100">Effectuer le dépôt</button>
                     </form>
                 </div>
             </div>

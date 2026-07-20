@@ -6,6 +6,7 @@
     <title>Barèmes de frais - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -37,16 +38,18 @@
         </div>
     <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Barèmes de frais</h1>
+    <div class="page-header">
+        <h1>Barèmes de frais</h1>
+        <p class="text-muted">Configurer les frais par tranche</p>
+    </div>
 
-    <div class="card shadow border-0 mb-4">
-        <div class="card-header bg-white fw-bold">Ajouter un barème de frais</div>
-        <div class="card-body">
+    <div class="glass-card mb-4">
+        <div class="card-body p-5">
             <form action="/admin/fee_brackets" method="post">
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label">Type d'opération</label>
-                        <select name="operation_type_id" class="form-select" required>
+                        <select name="operation_type_id" class="input-custom form-select" required>
                             <option value="">-- Choisir --</option>
                             <?php foreach ($operation_types as $type): ?>
                             <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
@@ -55,30 +58,30 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Min (Ar)</label>
-                        <input type="number" name="min_amount" class="form-control" required>
+                        <input type="number" name="min_amount" class="input-custom form-control" required>
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Max (Ar)</label>
-                        <input type="number" name="max_amount" class="form-control" required>
+                        <input type="number" name="max_amount" class="input-custom form-control" required>
                     </div>
                     <div class="col-md-2">
                         <label class="form-label">Frais (Ar)</label>
-                        <input type="number" name="fee" class="form-control" required>
+                        <input type="number" name="fee" class="input-custom form-control" required>
                     </div>
                     <div class="col-md-3 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Ajouter</button>
+                        <button type="submit" class="btn btn-primary-custom w-100">Ajouter</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">Liste des barèmes</div>
-        <div class="card-body p-0">
+    <div class="card-custom">
+        <div class="card-header-custom">Liste des barèmes</div>
+        <div class="card-body-custom p-0">
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered mb-0">
-                    <thead class="table-dark">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
                             <th>ID</th>
                             <th>Opération</th>
@@ -91,19 +94,19 @@
                     <tbody>
                         <?php if (empty($fee_brackets)): ?>
                             <tr>
-                                <td colspan="6" class="text-center text-muted py-4">Aucun barème.</td>
+                                <td colspan="6" class="text-center py-5 text-muted">Aucun barème.</td>
                             </tr>
                         <?php endif; ?>
                         <?php foreach ($fee_brackets as $bracket): ?>
                         <tr>
-                            <td><?= $bracket['id'] ?></td>
+                            <td class="fw-bold">#<?= $bracket['id'] ?></td>
                             <td><?= $bracket['operation_name'] ?></td>
                             <td><?= number_format($bracket['min_amount']) ?></td>
                             <td><?= number_format($bracket['max_amount']) ?></td>
-                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($bracket['fee']) ?></td>
+                            <td class="fw-bold" style="color: var(--dark);"><?= number_format($bracket['fee']) ?> Ar</td>
                             <td>
-                                <a href="/admin/fee_brackets/edit/<?= $bracket['id'] ?>" class="btn btn-warning btn-sm">Modifier</a>
-                                <a href="/admin/fee_brackets/delete/<?= $bracket['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce barème ?')">Supprimer</a>
+                                <a href="/admin/fee_brackets/edit/<?= $bracket['id'] ?>" class="btn btn-outline-custom btn-sm">Modifier</a>
+                                <a href="/admin/fee_brackets/delete/<?= $bracket['id'] ?>" class="btn btn-outline-custom btn-sm" style="border-color: var(--danger); color: var(--danger);" onclick="return confirm('Supprimer ce barème ?')">Supprimer</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

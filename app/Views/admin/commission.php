@@ -6,6 +6,7 @@
     <title>Commission globale - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -37,18 +38,22 @@
         </div>
     <?php endif; ?>
 
+    <div class="page-header">
+        <h1>Commission globale</h1>
+        <p class="text-muted">Configurer la commission pour les transferts vers d'autres opérateurs</p>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card shadow border-0">
-                <div class="card-header bg-white fw-bold">Commission globale pour les transferts vers autres opérateurs</div>
-                <div class="card-body">
+            <div class="glass-card">
+                <div class="card-body p-5">
                     <form action="/admin/commission" method="post">
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label">Pourcentage de commission (%)</label>
-                            <input type="number" step="0.1" name="external_commission_percentage" class="form-control" value="<?= $operator['external_commission_percentage'] ?>" required>
+                            <input type="number" step="0.1" name="external_commission_percentage" class="input-custom form-control" value="<?= $operator['external_commission_percentage'] ?>" required>
                             <div class="form-text text-muted">Cette commission est appliquée sur les frais de transfert vers les autres opérateurs.</div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <button type="submit" class="btn btn-primary-custom w-100">Enregistrer</button>
                     </form>
                 </div>
             </div>

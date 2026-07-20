@@ -6,6 +6,7 @@
     <title>Transfert - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -40,37 +41,41 @@
         </div>
     <?php endif; ?>
 
+    <div class="page-header">
+        <h1>Effectuer un transfert</h1>
+        <p class="text-muted">Envoyer de l'argent à vos proches</p>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow border-0">
-                <div class="card-header bg-white fw-bold">Effectuer un transfert</div>
-                <div class="card-body">
+            <div class="glass-card">
+                <div class="card-body p-5">
                     <form action="/client/transfert" method="post" id="transferForm">
                         <div id="phoneNumbersContainer">
                             <div class="mb-3 phone-input-group">
                                 <label class="form-label">Numéro du destinataire</label>
                                 <div class="input-group">
-                                    <input type="text" name="phone_numbers[]" class="form-control" placeholder="Ex: 0331234567" required>
+                                    <input type="text" name="phone_numbers[]" class="input-custom form-control" placeholder="Ex: 0331234567" required>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-outline-primary btn-sm mb-3" onclick="addPhoneField()">
+                        <button type="button" class="btn btn-outline-custom btn-sm mb-3" onclick="addPhoneField()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                             </svg>
                             Ajouter un numéro
                         </button>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label">Montant total (Ar)</label>
-                            <input type="number" name="amount" class="form-control" required>
+                            <input type="number" name="amount" class="input-custom form-control" required>
                             <div class="form-text text-muted">Le montant sera divisé équitablement entre tous les destinataires.</div>
                         </div>
-                        <div class="mb-3 form-check">
+                        <div class="mb-4 form-check">
                             <input type="checkbox" name="include_retrait_fee" class="form-check-input" id="includeRetraitFee">
                             <label class="form-check-label" for="includeRetraitFee">Inclure les frais de retrait pour le destinataire</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Effectuer le transfert</button>
+                        <button type="submit" class="btn btn-primary-custom w-100">Effectuer le transfert</button>
                     </form>
                 </div>
             </div>
@@ -98,13 +103,15 @@ function addPhoneField() {
     const input = document.createElement('input');
     input.type = 'text';
     input.name = 'phone_numbers[]';
-    input.className = 'form-control';
+    input.className = 'input-custom form-control';
     input.placeholder = 'Ex: 0331234567';
     input.required = true;
 
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'btn btn-outline-danger';
+    removeBtn.className = 'btn btn-outline-custom';
+    removeBtn.style.borderColor = 'var(--danger)';
+    removeBtn.style.color = 'var(--danger)';
     removeBtn.onclick = function() {
         removePhoneField(this);
     };

@@ -6,6 +6,7 @@
     <title>Mon solde - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="sidebar">
@@ -40,19 +41,20 @@
         </div>
     <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Mon solde</h1>
+    <div class="page-header">
+        <h1>Mon solde</h1>
+        <p class="text-muted">Solde disponible sur votre compte</p>
+    </div>
 
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card shadow border-0 text-center">
-                <div class="card-body p-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-wallet2 mb-3" style="color: var(--primary);" viewBox="0 0 16 16">
-                        <path d="M12.138.123A.5.5 0 0 0 11.928-.002L13.028 1.58a.5.5 0 0 0 .854-.353L13.766.454a.5.5 0 0 0-.394-.786H13.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.338a.5.5 0 0 0 .354-.353l1.414-1.414a.5.5 0 0 0-.353-.854zM2.5 3A1.5 1.5 0 0 0 1 4.5v7A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5v-7A1.5 1.5 0 0 0 13.5 3h-11z"/>
-                    </svg>
-                    <h5 class="card-title text-muted">Solde disponible</h5>
-                    <p class="card-text display-4 fw-bold" style="color: var(--primary);"><?= number_format($client['balance']) ?> Ar</p>
-                    <p class="text-muted"><?= $client['phone_number'] ?></p>
-                </div>
+            <div class="glass-card text-center p-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-wallet2 mb-3" style="color: var(--primary);" viewBox="0 0 16 16">
+                    <path d="M12.138.123A.5.5 0 0 0 11.928-.002L13.028 1.58a.5.5 0 0 0 .854-.353L13.766.454a.5.5 0 0 0-.394-.786H13.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.338a.5.5 0 0 0 .354-.353l1.414-1.414a.5.5 0 0 0-.353-.854zM2.5 3A1.5 1.5 0 0 0 1 4.5v7A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5v-7A1.5 1.5 0 0 0 13.5 3h-11z"/>
+                </svg>
+                <p class="text-muted mb-2">Solde disponible</p>
+                <p class="fw-black mb-0" style="font-size: 3rem; color: var(--dark); letter-spacing: -0.02em;"><?= number_format($client['balance']) ?> <span style="color: var(--gray-400); font-size: 1.5rem;">Ar</span></p>
+                <p class="text-muted mt-3"><?= $client['phone_number'] ?></p>
             </div>
         </div>
     </div>
