@@ -95,6 +95,27 @@ class AdminController extends BaseController
         return redirect()->to('/admin/fee_brackets')->with('success', 'Barème supprimé.');
     }
 
+    public function edit_fee_bracket($id)
+    {
+        $model = new FeeBracketModel();
+        $data['bracket'] = $model->find($id);
+        $operationTypeModel = new OperationTypeModel();
+        $data['operation_types'] = $operationTypeModel->findAll();
+        return view('admin/edit_fee_bracket', $data);
+    }
+
+    public function update_fee_bracket($id)
+    {
+        $model = new FeeBracketModel();
+        $model->update($id, [
+            'operation_type_id' => $this->request->getPost('operation_type_id'),
+            'min_amount' => $this->request->getPost('min_amount'),
+            'max_amount' => $this->request->getPost('max_amount'),
+            'fee' => $this->request->getPost('fee'),
+        ]);
+        return redirect()->to('/admin/fee_brackets')->with('success', 'Barème modifié.');
+    }
+
     public function gains()
     {
         $transactionModel = new TransactionModel();

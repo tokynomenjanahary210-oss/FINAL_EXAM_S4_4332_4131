@@ -99,6 +99,7 @@
                             <td><?= number_format($bracket['max_amount']) ?></td>
                             <td class="fw-bold" style="color: var(--primary);"><?= number_format($bracket['fee']) ?></td>
                             <td>
+                                <a href="/admin/fee_brackets/edit/<?= $bracket['id'] ?>" class="btn btn-warning btn-sm">Modifier</a>
                                 <a href="/admin/fee_brackets/delete/<?= $bracket['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce barème ?')">Supprimer</a>
                             </td>
                         </tr>

@@ -17,6 +17,8 @@ $routes->get('/admin/operation_types/delete/(:num)', 'AdminController::delete_op
 $routes->get('/admin/fee_brackets', 'AdminController::fee_brackets');
 $routes->post('/admin/fee_brackets', 'AdminController::fee_brackets');
 $routes->get('/admin/fee_brackets/delete/(:num)', 'AdminController::delete_fee_bracket/$1');
+$routes->get('/admin/fee_brackets/edit/(:num)', 'AdminController::edit_fee_bracket/$1');
+$routes->post('/admin/fee_brackets/update/(:num)', 'AdminController::update_fee_bracket/$1');
 $routes->get('/admin/gains', 'AdminController::gains');
 $routes->get('/admin/clients', 'AdminController::clients');
 
