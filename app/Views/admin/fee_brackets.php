@@ -22,6 +22,9 @@
         <li><a href="/admin/fee_brackets" class="active">Barèmes de frais</a></li>
         <li><a href="/admin/gains">Gains</a></li>
         <li><a href="/admin/clients">Clients</a></li>
+        <li><a href="/admin/other_operators">Autres opérateurs</a></li>
+        <li><a href="/admin/commission">Commission</a></li>
+        <li><a href="/admin/amounts_to_send">Montants à reverser</a></li>
         <li><a href="/client/login">Accès Client</a></li>
     </ul>
 </div>

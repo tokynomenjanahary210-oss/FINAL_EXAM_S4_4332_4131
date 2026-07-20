@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord - MobiCash</title>
+    <title>Montants à reverser - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -16,7 +16,7 @@
         Mobi<span>Cash</span>
     </a>
     <ul class="sidebar-nav">
-        <li><a href="/admin" class="active">Tableau de bord</a></li>
+        <li><a href="/admin">Tableau de bord</a></li>
         <li><a href="/admin/prefixes">Préfixes</a></li>
         <li><a href="/admin/operation_types">Types d'opérations</a></li>
         <li><a href="/admin/fee_brackets">Barèmes de frais</a></li>
@@ -24,7 +24,7 @@
         <li><a href="/admin/clients">Clients</a></li>
         <li><a href="/admin/other_operators">Autres opérateurs</a></li>
         <li><a href="/admin/commission">Commission</a></li>
-        <li><a href="/admin/amounts_to_send">Montants à reverser</a></li>
+        <li><a href="/admin/amounts_to_send" class="active">Montants à reverser</a></li>
         <li><a href="/client/login">Accès Client</a></li>
     </ul>
 </div>
@@ -36,63 +36,32 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= session()->getFlashdata('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
 
-    <h1 class="fw-bold mb-4">Tableau de bord</h1>
-
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="card text-white shadow border-0" style="background: var(--dark);">
-                <div class="card-body">
-                    <h5 class="card-title">Nombre de clients</h5>
-                    <p class="card-text display-4 fw-bold"><?= $clients_count ?></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-white shadow border-0" style="background: var(--primary);">
-                <div class="card-body">
-                    <h5 class="card-title">Solde total</h5>
-                    <p class="card-text display-4 fw-bold"><?= number_format($total_balance) ?> Ar</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1 class="fw-bold mb-4">Montants à reverser aux opérateurs</h1>
 
     <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">
-            Situation des comptes clients
-        </div>
+        <div class="card-header bg-white fw-bold">Commissions par opérateur</div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-bordered mb-0">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
-                            <th>Téléphone</th>
-                            <th>Nom</th>
-                            <th>Solde</th>
-                            <th>Date création</th>
+                            <th>Opérateur</th>
+                            <th>Nombre de transferts</th>
+                            <th>Total commissions (Ar)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (empty($clients)): ?>
+                        <?php if (empty($amounts)): ?>
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">Aucun client.</td>
+                                <td colspan="3" class="text-center text-muted py-4">Aucun montant à reverser.</td>
                             </tr>
                         <?php endif; ?>
-                        <?php foreach ($clients as $client): ?>
+                        <?php foreach ($amounts as $amount): ?>
                         <tr>
-                            <td><?= $client['id'] ?></td>
-                            <td><?= $client['phone_number'] ?></td>
-                            <td><?= $client['full_name'] ?></td>
-                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($client['balance']) ?> Ar</td>
-                            <td><?= $client['created_at'] ?></td>
+                            <td class="fw-bold"><?= $amount['name'] ?></td>
+                            <td><?= $amount['transfer_count'] ?></td>
+                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($amount['total_commission']) ?> Ar</td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

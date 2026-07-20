@@ -1,10 +1,11 @@
--- Base de données SQLite pour Mobile Money Operator
+-- Base de données SQLite pour Mobile Money Operator - Version 2
 
 -- Table des opérateurs
 CREATE TABLE operators (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     prefixes TEXT NOT NULL,
+    external_commission_percentage REAL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -49,14 +50,26 @@ CREATE TABLE transactions (
     balance_after INTEGER NOT NULL,
     description TEXT,
     related_client_id INTEGER,
+    is_external INTEGER DEFAULT 0,
+    external_operator_id INTEGER,
+    commission_amount INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES clients(id),
     FOREIGN KEY (operation_type_id) REFERENCES operation_types(id),
-    FOREIGN KEY (related_client_id) REFERENCES clients(id)
+    FOREIGN KEY (related_client_id) REFERENCES clients(id),
+    FOREIGN KEY (external_operator_id) REFERENCES other_operators(id)
+);
+
+-- Table des autres opérateurs (Version 2)
+CREATE TABLE other_operators (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    prefixes TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Données initiales pour l'opérateur
-INSERT INTO operators (name, prefixes) VALUES ('MobileMoney', '033,037');
+INSERT INTO operators (name, prefixes, external_commission_percentage) VALUES ('MobileMoney', '033,037', 10);
 
 -- Données initiales pour les types d'opérations
 INSERT INTO operation_types (code, name, description) VALUES ('depot', 'Dépôt', 'Dépôt d''argent sur le compte');
@@ -86,5 +99,11 @@ INSERT INTO fee_brackets (operation_type_id, min_amount, max_amount, fee) VALUES
 INSERT INTO fee_brackets (operation_type_id, min_amount, max_amount, fee) VALUES (3, 500001, 1000000, 2500);
 INSERT INTO fee_brackets (operation_type_id, min_amount, max_amount, fee) VALUES (3, 1000001, 2000000, 3000);
 
--- Client de test
+-- Clients de test
 INSERT INTO clients (phone_number, balance, full_name) VALUES ('0331234567', 50000, 'Client Test');
+INSERT INTO clients (phone_number, balance, full_name) VALUES ('0377654321', 20000, 'Client Destinataire');
+
+-- Autres opérateurs (Version 2)
+INSERT INTO other_operators (name, prefixes) VALUES ('Yas', '034,038');
+INSERT INTO other_operators (name, prefixes) VALUES ('Orange', '032,037');
+INSERT INTO other_operators (name, prefixes) VALUES ('Airtel', '033,035');

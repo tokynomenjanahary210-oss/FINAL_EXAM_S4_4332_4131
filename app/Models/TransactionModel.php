@@ -8,5 +8,5 @@ class TransactionModel extends Model
 {
     protected $table = 'transactions';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['client_id', 'operation_type_id', 'amount', 'fee', 'balance_before', 'balance_after', 'description', 'related_client_id'];
+    protected $allowedFields = ['client_id', 'operation_type_id', 'amount', 'fee', 'balance_before', 'balance_after', 'description', 'related_client_id', 'is_external', 'external_operator_id', 'commission_amount'];
 }

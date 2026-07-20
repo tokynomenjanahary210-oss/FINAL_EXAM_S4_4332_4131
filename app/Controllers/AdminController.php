@@ -7,6 +7,7 @@ use App\Models\OperatorModel;
 use App\Models\TransactionModel;
 use App\Models\OperationTypeModel;
 use App\Models\FeeBracketModel;
+use App\Models\OtherOperatorModel;
 
 class AdminController extends BaseController
 {
@@ -116,6 +117,65 @@ class AdminController extends BaseController
         return redirect()->to('/admin/fee_brackets')->with('success', 'Barème modifié.');
     }
 
+    // Version 2: Gestion des autres opérateurs
+    public function other_operators()
+    {
+        $model = new OtherOperatorModel();
+
+        if ($this->request->getPost('name')) {
+            $prefixes = $this->request->getPost('prefixes');
+            $model->insert([
+                'name' => $this->request->getPost('name'),
+                'prefixes' => $prefixes,
+            ]);
+            return redirect()->to('/admin/other_operators')->with('success', 'Opérateur ajouté.');
+        }
+
+        $data['other_operators'] = $model->findAll();
+        return view('admin/other_operators', $data);
+    }
+
+    public function edit_other_operator($id)
+    {
+        $model = new OtherOperatorModel();
+        $data['operator'] = $model->find($id);
+        return view('admin/edit_other_operator', $data);
+    }
+
+    public function update_other_operator($id)
+    {
+        $model = new OtherOperatorModel();
+        $model->update($id, [
+            'name' => $this->request->getPost('name'),
+            'prefixes' => $this->request->getPost('prefixes'),
+        ]);
+        return redirect()->to('/admin/other_operators')->with('success', 'Opérateur modifié.');
+    }
+
+    public function delete_other_operator($id)
+    {
+        $model = new OtherOperatorModel();
+        $model->delete($id);
+        return redirect()->to('/admin/other_operators')->with('success', 'Opérateur supprimé.');
+    }
+
+    // Version 2: Configuration commission globale
+    public function commission()
+    {
+        $model = new OperatorModel();
+        $operator = $model->first();
+
+        if ($this->request->getPost()) {
+            $operator['external_commission_percentage'] = $this->request->getPost('external_commission_percentage');
+            $model->update($operator['id'], $operator);
+            return redirect()->to('/admin/commission')->with('success', 'Commission mise à jour.');
+        }
+
+        $data['operator'] = $operator;
+        return view('admin/commission', $data);
+    }
+
+    // Version 2: Gains séparés
     public function gains()
     {
         $transactionModel = new TransactionModel();
@@ -136,10 +196,57 @@ class AdminController extends BaseController
             ];
         }
 
+        $internal_fees = $transactionModel
+            ->select('SUM(fee) as total_fee')
+            ->where('is_external', 0)
+            ->where('operation_type_id', 3)
+            ->first();
+
+        $external_fees = $transactionModel
+            ->select('SUM(fee) as total_fee')
+            ->where('is_external', 1)
+            ->where('operation_type_id', 3)
+            ->first();
+
+        $total_commissions = $transactionModel
+            ->select('SUM(commission_amount) as total_commission')
+            ->where('is_external', 1)
+            ->first();
+
         $data['gains'] = $gains;
         $data['total_gains'] = array_sum(array_column($gains, 'total'));
+        $data['internal_fees'] = $internal_fees['total_fee'] ?? 0;
+        $data['external_fees'] = $external_fees['total_fee'] ?? 0;
+        $data['total_commissions'] = $total_commissions['total_commission'] ?? 0;
 
         return view('admin/gains', $data);
+    }
+
+    // Version 2: Montants à reverser aux opérateurs
+    public function amounts_to_send()
+    {
+        $transactionModel = new TransactionModel();
+        $otherOperatorModel = new OtherOperatorModel();
+
+        $other_operators = $otherOperatorModel->findAll();
+        $amounts = [];
+
+        foreach ($other_operators as $operator) {
+            $result = $transactionModel
+                ->select('COUNT(*) as transfer_count, SUM(commission_amount) as total_commission')
+                ->where('is_external', 1)
+                ->where('external_operator_id', $operator['id'])
+                ->first();
+
+            $amounts[] = [
+                'name' => $operator['name'],
+                'transfer_count' => $result['transfer_count'] ?? 0,
+                'total_commission' => $result['total_commission'] ?? 0,
+            ];
+        }
+
+        $data['amounts'] = $amounts;
+        return view('admin/amounts_to_send', $data);
     }
 
     public function clients()

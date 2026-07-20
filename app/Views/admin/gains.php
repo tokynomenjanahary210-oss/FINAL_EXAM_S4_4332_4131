@@ -22,6 +22,12 @@
         <li><a href="/admin/fee_brackets">Barèmes de frais</a></li>
         <li><a href="/admin/gains" class="active">Gains</a></li>
         <li><a href="/admin/clients">Clients</a></li>
+        <li><a href="/admin/other_operators">Autres opérateurs</a></li>
+        <li><a href="/admin/commission">Commission</a></li>
+        <li><a href="/admin/amounts_to_send">Montants à reverser</a></li>
+        <li><a href="/admin/other_operators">Autres opérateurs</a></li>
+        <li><a href="/admin/commission">Commission</a></li>
+        <li><a href="/admin/amounts_to_send" class="active">Montants à reverser</a></li>
         <li><a href="/client/login">Accès Client</a></li>
     </ul>
 </div>
@@ -36,8 +42,47 @@
 
     <h1 class="fw-bold mb-4">Situation des gains via les frais</h1>
 
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-white shadow border-0" style="background: var(--dark);">
+                <div class="card-body">
+                    <h5 class="card-title">Frais transferts internes</h5>
+                    <p class="card-text display-6 fw-bold"><?= number_format($internal_fees) ?></p>
+                    <p class="card-text text-white-50">Ar</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white shadow border-0" style="background: var(--primary);">
+                <div class="card-body">
+                    <h5 class="card-title">Frais transferts externes</h5>
+                    <p class="card-text display-6 fw-bold"><?= number_format($external_fees) ?></p>
+                    <p class="card-text text-white-50">Ar</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white shadow border-0" style="background: #0d6efd;">
+                <div class="card-body">
+                    <h5 class="card-title">Total des frais</h5>
+                    <p class="card-text display-6 fw-bold"><?= number_format($total_gains) ?></p>
+                    <p class="card-text text-white-50">Ar</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white shadow border-0" style="background: #dc3545;">
+                <div class="card-body">
+                    <h5 class="card-title">Commissions à reverser</h5>
+                    <p class="card-text display-6 fw-bold"><?= number_format($total_commissions) ?></p>
+                    <p class="card-text text-white-50">Ar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card shadow border-0">
-        <div class="card-header bg-white fw-bold">Gains par type d'opération</div>
+        <div class="card-header bg-white fw-bold">Détail par type d'opération</div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-bordered mb-0">
@@ -60,12 +105,6 @@
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
-                    <tfoot>
-                        <tr class="table-active fw-bold">
-                            <td>Total général</td>
-                            <td style="color: var(--primary);"><?= number_format($total_gains) ?> Ar</td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>

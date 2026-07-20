@@ -22,6 +22,16 @@ $routes->post('/admin/fee_brackets/update/(:num)', 'AdminController::update_fee_
 $routes->get('/admin/gains', 'AdminController::gains');
 $routes->get('/admin/clients', 'AdminController::clients');
 
+// Version 2 routes
+$routes->get('/admin/other_operators', 'AdminController::other_operators');
+$routes->post('/admin/other_operators', 'AdminController::other_operators');
+$routes->get('/admin/other_operators/edit/(:num)', 'AdminController::edit_other_operator/$1');
+$routes->post('/admin/other_operators/update/(:num)', 'AdminController::update_other_operator/$1');
+$routes->get('/admin/other_operators/delete/(:num)', 'AdminController::delete_other_operator/$1');
+$routes->get('/admin/commission', 'AdminController::commission');
+$routes->post('/admin/commission', 'AdminController::commission');
+$routes->get('/admin/amounts_to_send', 'AdminController::amounts_to_send');
+
 // Client routes
 $routes->get('/client/login', 'ClientController::login');
 $routes->post('/client/login', 'ClientController::login');

@@ -6,6 +6,8 @@ use App\Models\ClientModel;
 use App\Models\TransactionModel;
 use App\Models\OperationTypeModel;
 use App\Models\FeeBracketModel;
+use App\Models\OperatorModel;
+use App\Models\OtherOperatorModel;
 
 class ClientController extends BaseController
 {
@@ -16,7 +18,8 @@ class ClientController extends BaseController
         if ($this->request->getPost('phone_number')) {
             $phone = $this->request->getPost('phone_number');
             $clientModel = new ClientModel();
-            $operatorModel = new \App\Models\OperatorModel();
+            $operatorModel = new OperatorModel();
+            $otherOperatorModel = new OtherOperatorModel();
 
             $operator = $operatorModel->first();
             $prefixes = array_map('trim', explode(',', $operator['prefixes']));
@@ -29,7 +32,20 @@ class ClientController extends BaseController
             }
 
             if (! $valid) {
-                return view('client/login', ['error' => 'Numéro invalide. Utilisez un préfixe valide: ' . $operator['prefixes']]);
+                $otherOperators = $otherOperatorModel->findAll();
+                foreach ($otherOperators as $otherOp) {
+                    $otherPrefixes = array_map('trim', explode(',', $otherOp['prefixes']));
+                    foreach ($otherPrefixes as $prefix) {
+                        if (str_starts_with($phone, $prefix)) {
+                            $valid = true;
+                            break 2;
+                        }
+                    }
+                }
+            }
+
+            if (! $valid) {
+                return view('client/login', ['error' => 'Numéro invalide. Utilisez un préfixe valide.']);
             }
 
             $client = $clientModel->where('phone_number', $phone)->first();
@@ -158,6 +174,20 @@ class ClientController extends BaseController
         return view('client/retrait');
     }
 
+    private function detectExternalOperator($phone, OtherOperatorModel $otherOperatorModel)
+    {
+        $otherOperators = $otherOperatorModel->findAll();
+        foreach ($otherOperators as $operator) {
+            $prefixes = array_map('trim', explode(',', $operator['prefixes']));
+            foreach ($prefixes as $prefix) {
+                if (str_starts_with($phone, $prefix)) {
+                    return $operator;
+                }
+            }
+        }
+        return null;
+    }
+
     public function transfert()
     {
         $session = session();
@@ -165,72 +195,126 @@ class ClientController extends BaseController
             return redirect()->to('/client/login');
         }
 
-        if ($this->request->getPost('phone_number') && $this->request->getPost('amount')) {
-            $phone = $this->request->getPost('phone_number');
+        if ($this->request->getPost('phone_numbers') && $this->request->getPost('amount')) {
+            $phones = $this->request->getPost('phone_numbers');
             $amount = (int) $this->request->getPost('amount');
+            $include_retrait_fee = $this->request->getPost('include_retrait_fee') ? 1 : 0;
+
             $clientModel = new ClientModel();
             $transactionModel = new TransactionModel();
             $operationTypeModel = new OperationTypeModel();
             $feeBracketModel = new FeeBracketModel();
+            $operatorModel = new OperatorModel();
+            $otherOperatorModel = new OtherOperatorModel();
 
             $sender = $clientModel->find($session->get('client_id'));
-
-            if ($sender['phone_number'] === $phone) {
-                return redirect()->to('/client/dashboard')->with('error', 'Impossible de transférer vers votre propre compte.');
-            }
-
-            $receiver = $clientModel->where('phone_number', $phone)->first();
-
-            if (! $receiver) {
-                return redirect()->to('/client/dashboard')->with('error', 'Destinataire introuvable.');
-            }
-
             $operationType = $operationTypeModel->where('code', 'transfert')->first();
 
-            $fee = $feeBracketModel
-                ->where('operation_type_id', $operationType['id'])
-                ->where('min_amount <=', $amount)
-                ->where('max_amount >=', $amount)
-                ->first();
+            $phones = array_map('trim', $phones);
+            $recipients = [];
 
-            $fee_amount = $fee ? $fee['fee'] : 0;
-            $total = $amount + $fee_amount;
-
-            if ($sender['balance'] < $total) {
-                return redirect()->to('/client/dashboard')->with('error', 'Solde insuffisant.');
+            foreach ($phones as $p) {
+                if (empty($p) || $p === $sender['phone_number']) {
+                    continue;
+                }
+                $receiver = $clientModel->where('phone_number', $p)->first();
+                if (! $receiver) {
+                    $receiverId = $clientModel->insert([
+                        'phone_number' => $p,
+                        'balance' => 0,
+                        'full_name' => '',
+                    ]);
+                    $receiver = $clientModel->find($receiverId);
+                }
+                $recipients[] = $receiver;
             }
 
-            $balance_before_sender = $sender['balance'];
-            $balance_after_sender = $balance_before_sender - $total;
-            $balance_before_receiver = $receiver['balance'];
-            $balance_after_receiver = $balance_before_receiver + $amount;
+            if (empty($recipients)) {
+                return redirect()->to('/client/dashboard')->with('error', 'Aucun destinataire valide.');
+            }
 
-            $clientModel->update($sender['id'], ['balance' => $balance_after_sender]);
-            $clientModel->update($receiver['id'], ['balance' => $balance_after_receiver]);
+            $share_amount = (int) floor($amount / count($recipients));
+            $remainder = $amount % count($recipients);
 
-            $transactionModel->insert([
-                'client_id' => $sender['id'],
-                'operation_type_id' => $operationType['id'],
-                'amount' => $amount,
-                'fee' => $fee_amount,
-                'balance_before' => $balance_before_sender,
-                'balance_after' => $balance_after_sender,
-                'description' => 'Transfert vers ' . $receiver['phone_number'],
-                'related_client_id' => $receiver['id'],
-            ]);
+            foreach ($recipients as $index => $receiver) {
+                $current_amount = $share_amount + ($index === 0 ? $remainder : 0);
 
-            $transactionModel->insert([
-                'client_id' => $receiver['id'],
-                'operation_type_id' => $operationType['id'],
-                'amount' => $amount,
-                'fee' => 0,
-                'balance_before' => $balance_before_receiver,
-                'balance_after' => $balance_after_receiver,
-                'description' => 'Transfert reçu de ' . $sender['phone_number'],
-                'related_client_id' => $sender['id'],
-            ]);
+                $fee = $feeBracketModel
+                    ->where('operation_type_id', $operationType['id'])
+                    ->where('min_amount <=', $current_amount)
+                    ->where('max_amount >=', $current_amount)
+                    ->first();
 
-            return redirect()->to('/client/dashboard')->with('success', 'Transfert effectué avec succès.');
+                $fee_amount = $fee ? $fee['fee'] : 0;
+
+                $external_operator = $this->detectExternalOperator($receiver['phone_number'], $otherOperatorModel);
+                $is_external = $external_operator ? 1 : 0;
+
+                $commission_amount = 0;
+                if ($is_external) {
+                    $operator = $operatorModel->first();
+                    $commission_percentage = $operator['external_commission_percentage'] ?? 0;
+                    $commission_amount = (int) floor($fee_amount * $commission_percentage / 100);
+                }
+
+                $retrait_fee = 0;
+                if ($include_retrait_fee && $is_external) {
+                    $retrait_fee_bracket = $feeBracketModel
+                        ->where('operation_type_id', 2)
+                        ->where('min_amount <=', $current_amount)
+                        ->where('max_amount >=', $current_amount)
+                        ->first();
+                    $retrait_fee = $retrait_fee_bracket ? $retrait_fee_bracket['fee'] : 0;
+                }
+
+                $total = $current_amount + $fee_amount + $commission_amount + $retrait_fee;
+
+                if ($sender['balance'] < $total) {
+                    return redirect()->to('/client/dashboard')->with('error', 'Solde insuffisant pour un ou plusieurs destinataires.');
+                }
+
+                $balance_before_sender = $sender['balance'];
+                $balance_after_sender = $balance_before_sender - $total;
+                $balance_before_receiver = $receiver['balance'];
+                $balance_after_receiver = $balance_before_receiver + $current_amount;
+
+                $clientModel->update($sender['id'], ['balance' => $balance_after_sender]);
+                $clientModel->update($receiver['id'], ['balance' => $balance_after_receiver]);
+
+                $description = 'Transfert vers ' . $receiver['phone_number'];
+                if ($is_external) {
+                    $description .= ' (externe vers ' . $external_operator['name'] . ')';
+                }
+
+                $transactionModel->insert([
+                    'client_id' => $sender['id'],
+                    'operation_type_id' => $operationType['id'],
+                    'amount' => $current_amount,
+                    'fee' => $fee_amount,
+                    'balance_before' => $balance_before_sender,
+                    'balance_after' => $balance_after_sender,
+                    'description' => $description,
+                    'related_client_id' => $receiver['id'],
+                    'is_external' => $is_external,
+                    'external_operator_id' => $is_external ? $external_operator['id'] : null,
+                    'commission_amount' => $commission_amount,
+                ]);
+
+                $transactionModel->insert([
+                    'client_id' => $receiver['id'],
+                    'operation_type_id' => $operationType['id'],
+                    'amount' => $current_amount,
+                    'fee' => 0,
+                    'balance_before' => $balance_before_receiver,
+                    'balance_after' => $balance_after_receiver,
+                    'description' => 'Transfert reçu de ' . $sender['phone_number'],
+                    'related_client_id' => $sender['id'],
+                ]);
+
+                $sender['balance'] = $balance_after_sender;
+            }
+
+            return redirect()->to('/client/dashboard')->with('success', 'Transfert(s) effectué(s) avec succès.');
         }
 
         return view('client/transfert');
