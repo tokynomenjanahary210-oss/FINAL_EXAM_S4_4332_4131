@@ -6,6 +6,7 @@
     <title>Retrait - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -18,12 +19,12 @@
     </a>
     <div class="sidebar-phone"><?= session()->get('client_phone') ?></div>
     <ul class="sidebar-nav">
-        <li><a href="/client/dashboard">Solde</a></li>
-        <li><a href="/client/depot">Dépôt</a></li>
+        <li><a href="/client/dashboard"><i class="bi bi-wallet2 me-2"></i>Solde</a></li>
+        <li><a href="/client/depot"><i class="bi bi-arrow-down-circle me-2"></i>Dépôt</a></li>
         <li><a href="/client/retrait" class="active">Retrait</a></li>
-        <li><a href="/client/transfert">Transfert</a></li>
-        <li><a href="/client/historique">Historique</a></li>
-        <li><a href="/client/logout">Déconnexion</a></li>
+        <li><a href="/client/transfert"><i class="bi bi-arrow-left-right me-2"></i>Transfert</a></li>
+        <li><a href="/client/historique"><i class="bi bi-clock-history me-2"></i>Historique</a></li>
+        <li><a href="/client/logout"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
     </ul>
 </div>
 
