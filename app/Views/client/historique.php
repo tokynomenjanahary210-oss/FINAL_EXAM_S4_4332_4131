@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historique des transactions</title>
+    <title>Historique des transactions - MobiCash</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/client/dashboard">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-phone me-2" viewBox="0 0 16 16">
-                <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-            </svg>
-            Mobile Money
-        </a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="/client/dashboard">Solde</a>
-            <a class="nav-link" href="/client/depot">Dépôt</a>
-            <a class="nav-link" href="/client/retrait">Retrait</a>
-            <a class="nav-link" href="/client/transfert">Transfert</a>
-            <a class="nav-link active" href="/client/historique">Historique</a>
-            <a class="nav-link" href="/client/logout">Déconnexion</a>
-        </div>
-    </div>
-</nav>
+<body>
+<div class="sidebar">
+    <a href="/client/dashboard" class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
+            <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+        </svg>
+        Mobi<span>Cash</span>
+    </a>
+    <ul class="sidebar-nav">
+        <li><a href="/client/dashboard">Solde</a></li>
+        <li><a href="/client/depot">Dépôt</a></li>
+        <li><a href="/client/retrait">Retrait</a></li>
+        <li><a href="/client/transfert">Transfert</a></li>
+        <li><a href="/client/historique" class="active">Historique</a></li>
+        <li><a href="/client/logout">Déconnexion</a></li>
+    </ul>
+</div>
 
-<div class="container mt-4">
+<div class="main-content">
     <?php if (session()->getFlashdata('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?= session()->getFlashdata('success') ?>
@@ -73,7 +72,7 @@
                             <td><?= number_format($transaction['amount']) ?></td>
                             <td><?= number_format($transaction['fee']) ?></td>
                             <td><?= number_format($transaction['balance_before']) ?></td>
-                            <td class="fw-bold text-success"><?= number_format($transaction['balance_after']) ?></td>
+                            <td class="fw-bold" style="color: var(--primary);"><?= number_format($transaction['balance_after']) ?></td>
                             <td><?= $transaction['description'] ?></td>
                         </tr>
                         <?php endforeach; ?>
