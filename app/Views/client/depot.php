@@ -10,9 +10,7 @@
 </head>
 <body>
 <div class="sidebar">
-    <a href="/client/dashboard" class="sidebar-brand">
-        Pay<span>Wave</span>
-    </a>
+    <a href="/client/dashboard" class="sidebar-brand">Pay<span>Wave</span></a>
     <div class="sidebar-phone"><?= session()->get('client_phone') ?></div>
     <ul class="sidebar-nav">
         <li><a href="/client/dashboard">Solde</a></li>

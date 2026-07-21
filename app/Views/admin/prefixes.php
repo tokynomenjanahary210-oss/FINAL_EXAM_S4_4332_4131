@@ -10,9 +10,7 @@
 </head>
 <body>
 <div class="sidebar">
-    <a href="/admin" class="sidebar-brand">
-        Pay<span>Wave</span>
-    </a>
+    <a href="/admin" class="sidebar-brand">Pay<span>Wave</span></a>
     <ul class="sidebar-nav">
         <li><a href="/admin">Tableau de bord</a></li>
         <li><a href="/admin/prefixes" class="active">Préfixes</a></li>
