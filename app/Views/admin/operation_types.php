@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Types d'opérations - MobiCash</title>
+    <title>Types d'opérations - PayWave</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,29 +40,6 @@
         <p class="text-muted">Gérer les types d'opérations disponibles</p>
     </div>
 
-    <div class="glass-card mb-4">
-        <div class="card-body p-5">
-            <form action="/admin/operation_types" method="post">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label">Code</label>
-                        <input type="text" name="code" class="input-custom form-control" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Nom</label>
-                        <input type="text" name="name" class="input-custom form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Description</label>
-                        <input type="text" name="description" class="input-custom form-control">
-                    </div>
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary-custom w-100">Ajouter</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <div class="card-custom">
         <div class="card-header-custom">Liste des types d'opérations</div>

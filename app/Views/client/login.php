@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - MobiCash</title>
+    <title>Connexion - PayWave</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
             <div class="glass-card">
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h2 class="fw-black mb-2" style="color: var(--dark);">MobiCash</h2>
+                        <h2 class="fw-black mb-2" style="color: var(--dark);">PayWave</h2>
 
 
                     </div>
