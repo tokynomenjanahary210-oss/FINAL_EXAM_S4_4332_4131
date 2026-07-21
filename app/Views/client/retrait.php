@@ -11,7 +11,7 @@
 <body>
 <div class="sidebar">
     <a href="/client/dashboard" class="sidebar-brand">
-        Mobi<span>Cash</span>
+        Pay<span>Wave</span>
     </a>
     <div class="sidebar-phone"><?= session()->get('client_phone') ?></div>
     <ul class="sidebar-nav">

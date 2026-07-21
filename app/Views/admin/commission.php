@@ -11,7 +11,7 @@
 <body>
 <div class="sidebar">
     <a href="/admin" class="sidebar-brand">
-        Mobi<span>Cash</span>
+        Pay<span>Wave</span>
     </a>
     <ul class="sidebar-nav">
         <li><a href="/admin">Tableau de bord</a></li>
